@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>3D Cube with Scatter Plot</title>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.140.0/build/three.min.js"></script>
+    <script src="https://unpkg.com/three@0.140.0/examples/jsm/"></script>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+</head>
+<body>
+<script>
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(32, window.innerWidth / window.innerHeight, 0.1, 1000);
+  const renderer = new THREE.WebGLRenderer();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  document.body.appendChild(renderer.domElement);
+
+  const controls = new THREE.OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true; // Optional, but this gives a smoother control feeling
+  controls.dampingFactor = 0.05;
+  controls.rotateSpeed = 0.1;
+
+  const cubeSize = 1;  // Dimension of the cube (2 units wide)
+  const cubeGeometry = new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize);
+  const cubeMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true });
+  const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+  scene.add(cube);
+
+  const pointsMaterial = new THREE.PointsMaterial({
+    color: 0xff0000,
+    size: 0.05,
+    sizeAttenuation: true
+  });
+
+  const pointsGeometry = new THREE.BufferGeometry();
+  const positions = [];
+
+  for (let i = 0; i < 100; i++) { // 100 random points
+    positions.push((Math.random() * cubeSize) - cubeSize / 2); // x-coordinate
+    positions.push((Math.random() * cubeSize) - cubeSize / 2); // y-coordinate
+    positions.push((Math.random() * cubeSize) - cubeSize / 2); // z-coordinate
+  }
+
+  pointsGeometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+
+  const points = new THREE.Points(pointsGeometry, pointsMaterial);
+  cube.add(points);
+
+  camera.position.z = 5;
+
+  function animate() {
+    requestAnimationFrame(animate);
+    cube.rotation.x += 0.001;
+    cube.rotation.y += 0.005;
+    renderer.render(scene, camera);
+  }
+  animate();
+
+  window.addEventListener('resize', () => {
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+  });
+</script>
+</body>
+</html>

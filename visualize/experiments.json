@@ -1,0 +1,32 @@
+[
+  {
+    "name": "NHS Crutch",
+    "params": [100, 90, 1],
+    "loss": 52.1
+  },
+  {
+    "name": "Smart Crutch",
+    "params": [140, 140, 0],
+    "loss": 55.5
+  },
+  {
+    "name": "Flat Angled",
+    "params": [90, 140, 3],
+    "loss": 49.5
+  },
+  {
+    "name": "Opmo",
+    "params": [90, 140, 28],
+    "loss": 46.2
+  },
+  {
+    "name": "Experiment 1",
+    "params": [70, 130, 21],
+    "loss": 36.1
+  },
+  {
+    "name": "Experiment 2",
+    "params": [110, 140, 20],
+    "loss": 28.8
+  }
+]
