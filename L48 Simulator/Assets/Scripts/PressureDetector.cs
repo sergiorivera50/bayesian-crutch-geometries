@@ -1,13 +1,26 @@
 using System.Linq;
 using UnityEngine;
+using System.IO;
 
 public class PressureDetector : MonoBehaviour {
     public float measurementInterval = 0.5f; // Time in seconds between measurements
+    public float experimentDuration = 20.0f;
     public string identifier;
     private float pressure = 0.0f;
+    private string logPath;
 
     void Start() {
+        logPath = Application.dataPath + "/forces.log";
+    }
+
+    public void StartLogging() {
         InvokeRepeating("PrintMeasurement", 0.0f, measurementInterval);
+        Invoke("ExitGame", experimentDuration);
+    }
+
+    void LogMessageToFile(string message) {
+        string entry = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + " - " + message;
+        File.AppendAllText(logPath, entry + "\n");
     }
 
     void OnCollisionStay(Collision collision) {
@@ -46,6 +59,18 @@ public class PressureDetector : MonoBehaviour {
     }
 
     void PrintMeasurement() {
-        Debug.Log("[" + identifier + "] Pressure: " + pressure + " Pa");
+        string logMessage = "[" + identifier + "] Pressure: " + pressure + " Pa";
+        Debug.Log(logMessage);
+        LogMessageToFile(logMessage);
+    }
+
+    private void ExitGame() {
+        #if UNITY_EDITOR
+            // If running in the Unity editor
+            UnityEditor.EditorApplication.isPlaying = false;
+        #else
+                // If running in a build
+                Application.Quit();
+        #endif
     }
 }
