@@ -19,3 +19,5 @@ Finally, we (1) use this methodology to build a more stable, less effortful and 
 ## How to use this repo
 
 Most of the work is contained within `main.ipynb`, where you will find our setup and all the experiments.
+
+Feel free to read the full report at `report.pdf`.
